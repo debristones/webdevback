@@ -7,6 +7,9 @@ const app = express();
 const expresslayouts = require('express-ejs-layouts');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
+const ratelimit = require('express-rate-limit');
+
+
 
 
 
@@ -14,6 +17,10 @@ const helmet = require('helmet');
 const indexRouter = require('./routes/index');
 const authorRouter = require('./routes/authors');
 const bookRouter = require('./routes/books');
+const limiter = ratelimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
 
 
 
@@ -24,6 +31,7 @@ app.use(expresslayouts);
 app.use(express.static('public'));
 app.use(bodyparser.urlencoded({limit: '10mb', extended: false}));
 app.use(helmet());
+app.use(limiter);
 
 const mongoose = require('mongoose');
 mongoose.connect((process.env.DATABASE_URL));
