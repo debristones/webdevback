@@ -8,6 +8,8 @@ const expresslayouts = require('express-ejs-layouts');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const ratelimit = require('express-rate-limit');
+const cors = require('cors');
+   
 
 
 
@@ -32,6 +34,7 @@ app.use(express.static('public'));
 app.use(bodyparser.urlencoded({limit: '10mb', extended: false}));
 app.use(helmet());
 app.use(limiter);
+app.use(cors({origin: 'https://ppedi.com'})); 
 
 const mongoose = require('mongoose');
 mongoose.connect((process.env.DATABASE_URL));
